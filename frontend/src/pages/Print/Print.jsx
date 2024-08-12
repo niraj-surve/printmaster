@@ -74,7 +74,7 @@ const Print = () => {
   return (
     <div className="bg-dark h-screen flex flex-col items-center py-8 gap-10">
       <div className="flex flex-col items-center gap-4">
-        <Link to={'/'}>
+        <Link to={'/printmaster'}>
         <h1 className="font-black text-flash text-4xl cursor-pointer">
           Print<span className="text-primary animate-fadeLoop">Master</span>
         </h1>

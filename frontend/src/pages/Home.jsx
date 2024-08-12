@@ -8,7 +8,7 @@ const Home = () => {
         <h1 className="font-black text-flash text-8xl cursor-pointer">
           Print<span className="text-primary animate-fadeLoop">Master</span>
         </h1>
-        <Link to={'/print'}>
+        <Link to={'/printmaster/print'}>
           <button className="bg-transparent text-primary text-2xl font-semibold border border-1 border-primary py-4 px-8 rounded-lg hover:bg-primary hover:text-flash fade">Start</button>
         </Link>
       </div>
