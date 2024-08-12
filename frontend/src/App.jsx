@@ -5,11 +5,11 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/printmaster",
     element: <Home />
   },
   {
-    path: "/print",
+    path: "/printmaster/print",
     element: <Print />
   },
 ]);
