@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "payment.endpoint",
+    "type": "java.lang.String",
+    "description": "A description for 'payment.endpoint'"
+  },
+  {
+    "name": "payment.saltkey",
+    "type": "java.lang.String",
+    "description": "A description for 'payment.saltkey'"
+  },
+  {
+    "name": "pay.url",
+    "type": "java.lang.String",
+    "description": "A description for 'pay.url'"
+  }
+]}

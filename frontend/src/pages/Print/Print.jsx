@@ -2,17 +2,15 @@ import React, { useState } from "react";
 import UserDetails from "./UserDetails";
 import FileUpload from "./FileUpload";
 import PrintOptions from "./PrintOptions";
-import { useDispatch } from "react-redux";
-import {
-  setUserDetails,
-  setFiles,
-  setPrintOptions,
-} from "../../store/printSlice";
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { setUserDetails, setFiles, setPrintOptions } from "../../store/printSlice";
+import { Link, redirect, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Print = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // State for each step
   const [userName, setUserName] = useState("");
@@ -34,50 +32,45 @@ const Print = () => {
   };
 
   // Function to handle form submission
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    // Extract file metadata
-    const fileMetadata = files.map(file => ({
-      name: file.name,
-      type: file.type,
-      size: file.size,
-    }));
-
-    // Dispatch actions to update the Redux store with file metadata
-    dispatch(
-      setUserDetails({
-        userName,
-        department,
-        classroom,
-      })
-    );
-    dispatch(setFiles(fileMetadata)); // Only store metadata
-    dispatch(
-      setPrintOptions({
-        copies,
-        printType,
-      })
-    );
-    console.log("Form submitted with:", {
-      userName,
-      department,
-      classroom,
-      fileMetadata,
-      copies,
-      printType,
-      paperSize
+  
+    // Create FormData object
+    const formData = new FormData();
+    formData.append("userName", userName);
+    formData.append("department", department);
+    formData.append("classroom", classroom);
+    formData.append("copies", copies);
+    formData.append("printType", printType);
+    formData.append("paperSize", paperSize);
+  
+    // Append each file to FormData
+    files.forEach((file) => {
+      formData.append("file", file);
     });
-    // Here you can navigate to the payment page or perform further actions
+  
+    try {
+      const response = await axios.post("http://localhost:8080/api/print/pay", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      
+      window.location.href = response.data.paymentUrl;
+      // Handle response or redirect
+    } catch (error) {
+      console.error("Error initiating payment:", error);
+    }
   };
+  
 
   return (
     <div className="bg-dark h-screen flex flex-col items-center py-8 gap-10">
       <div className="flex flex-col items-center gap-4">
         <Link to={'/printmaster'}>
-        <h1 className="font-black text-flash text-4xl cursor-pointer">
-          Print<span className="text-primary animate-fadeLoop">Master</span>
-        </h1>
+          <h1 className="font-black text-flash text-4xl cursor-pointer">
+            Print<span className="text-primary animate-fadeLoop">Master</span>
+          </h1>
         </Link>
         <p className="text-sm text-slate-400">Please enter your printing details...</p>
       </div>
