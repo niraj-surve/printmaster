@@ -29,6 +29,7 @@ public class PrintRequest {
 	private String paperSize;
 	private double amount;
 	private String transactionId;
+	private static String printerType = "HP";
 
 	public String getUserName() {
 		return userName;
@@ -100,6 +101,14 @@ public class PrintRequest {
 
 	public void setTransactionId(String transactionId) {
 		this.transactionId = transactionId;
+	}
+
+	public static String getPrinterType() {
+		return printerType;
+	}
+
+	public static void setPrinterType(String printerType) {
+		PrintRequest.printerType = printerType;
 	}
 
 }

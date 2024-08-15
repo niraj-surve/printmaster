@@ -30,6 +30,9 @@ public class PaymentService {
 	@Autowired
 	private PrintRequestRepository printRequestRepository;
 
+	@Autowired
+	private PrintService printService;
+
 	@Value("${payment.endpoint}")
 	private String endpoint;
 
@@ -115,6 +118,7 @@ public class PaymentService {
 			headers.set("X-VERIFY", checksum);
 			headers.set("X-MERCHANT-ID", transactionId);
 			headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
 			HttpEntity<String> requestEntity = new HttpEntity<>(headers);
 			RestTemplate restTemplate = new RestTemplate();
 			ResponseEntity<String> responseEntity = restTemplate.exchange(requestUrl, HttpMethod.GET, requestEntity,
@@ -126,6 +130,9 @@ public class PaymentService {
 			if (printRequest != null && isPaymentSuccessful(jsonResponse)) {
 				// Update the status or any other necessary fields
 				printRequestRepository.save(printRequest);
+
+				// Trigger the print process
+				printService.processPrintQueue();
 			}
 		}
 
